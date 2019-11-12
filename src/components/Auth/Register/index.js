@@ -9,6 +9,7 @@ import {
   Icon
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import firebase from "../../../firebase";
 
 class Register extends React.Component {
   state = {
@@ -22,6 +23,19 @@ class Register extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleSubmit = e => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(createdUser => {
+        console.log(createdUser);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   render() {
     const { username, email, password, passwordConfirmation } = this.state;
 
@@ -32,7 +46,7 @@ class Register extends React.Component {
             <Icon name="puzzle piece" color="orange" />
             Register for flix.chat
           </Header>
-          <Form size="large">
+          <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
               <Form.Input
                 fluid
