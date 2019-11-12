@@ -11,9 +11,16 @@ import {
 import { Link } from "react-router-dom";
 
 class Register extends React.Component {
-  state = {};
+  state = {
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirmation: ""
+  };
 
-  handleChange = () => {};
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   render() {
     return (
