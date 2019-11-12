@@ -63,6 +63,9 @@ class Register extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  displayErrors = errors =>
+    errors.map((error, i) => <p key={i}>{error.message}</p>);
+
   handleSubmit = e => {
     if (this.isFormValid()) {
       e.preventDefault();
@@ -79,7 +82,13 @@ class Register extends React.Component {
   };
 
   render() {
-    const { username, email, password, passwordConfirmation } = this.state;
+    const {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      errors
+    } = this.state;
 
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
@@ -139,6 +148,12 @@ class Register extends React.Component {
               </Button>
             </Segment>
           </Form>
+          {errors.length > 0 && (
+            <Message error>
+              <h3>Error</h3>
+              {this.displayErrors(errors)}
+            </Message>
+          )}
           <Message>
             Already registered? <Link to="/login">Log in</Link>
           </Message>
