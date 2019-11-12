@@ -23,6 +23,8 @@ class Register extends React.Component {
   };
 
   render() {
+    const { username, email, password, passwordConfirmation } = this.state;
+
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -38,6 +40,7 @@ class Register extends React.Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="Username"
+                value={username}
                 onChange={this.handleChange}
                 type="text"
               />
@@ -47,6 +50,7 @@ class Register extends React.Component {
                 icon="mail"
                 iconPosition="left"
                 placeholder="Email"
+                value={email}
                 onChange={this.handleChange}
                 type="email"
               />
@@ -56,6 +60,7 @@ class Register extends React.Component {
                 icon="lock"
                 iconPosition="left"
                 placeholder="Password"
+                value={password}
                 onChange={this.handleChange}
                 type="password"
               />
@@ -65,6 +70,7 @@ class Register extends React.Component {
                 icon="repeat"
                 iconPosition="left"
                 placeholder="Confirm Password"
+                value={passwordConfirmation}
                 onChange={this.handleChange}
                 type="password"
               />
