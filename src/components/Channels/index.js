@@ -13,9 +13,35 @@ class Channels extends React.Component {
     modal: false
   };
 
+  componentDidMount() {
+    this.addListeners();
+  }
+
+  addListeners = () => {
+    let loadedChannels = [];
+
+    this.state.channelsRef.on("child_added", snap => {
+      loadedChannels.push(snap.val());
+      this.setState({ channels: loadedChannels });
+    });
+  };
+
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
+  displayChannels = channels =>
+    channels.length > 0 &&
+    channels.map(channel => (
+      <Menu.Item
+        key={channel.id}
+        onClick={() => console.log(channel)}
+        name={channel.name}
+        style={{ opacity: 0.7 }}
+      >
+        # {channel.name}
+      </Menu.Item>
+    ));
 
   openModal = () => this.setState({ modal: true });
   closeModal = () => this.setState({ modal: false });
@@ -72,40 +98,41 @@ class Channels extends React.Component {
             </span>{" "}
             ({channels.length}) <Icon name="add" onClick={this.openModal} />
           </Menu.Item>
-
-          <Modal basic open={modal} onClose={this.closeModal}>
-            <Modal.Header>Add a Channel</Modal.Header>
-            <Modal.Content>
-              <Form onSubmit={this.handleSubmit}>
-                <Form.Field>
-                  <Input
-                    fluid
-                    label="Name of Channel"
-                    name="channelName"
-                    onChange={this.handleChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Input
-                    fluid
-                    label="About the Channel"
-                    name="channelDetails"
-                    onChange={this.handleChange}
-                  />
-                </Form.Field>
-              </Form>
-            </Modal.Content>
-
-            <Modal.Actions>
-              <Button color="green" inverted onClick={this.handleSubmit}>
-                <Icon name="checkmark" /> Add
-              </Button>
-              <Button color="red" inverted onClick={this.closeModal}>
-                <Icon name="remove" /> Cancel
-              </Button>
-            </Modal.Actions>
-          </Modal>
+          {this.displayChannels(channels)}
         </Menu.Menu>
+
+        <Modal basic open={modal} onClose={this.closeModal}>
+          <Modal.Header>Add a Channel</Modal.Header>
+          <Modal.Content>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Field>
+                <Input
+                  fluid
+                  label="Name of Channel"
+                  name="channelName"
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Input
+                  fluid
+                  label="About the Channel"
+                  name="channelDetails"
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+            </Form>
+          </Modal.Content>
+
+          <Modal.Actions>
+            <Button color="green" inverted onClick={this.handleSubmit}>
+              <Icon name="checkmark" /> Add
+            </Button>
+            <Button color="red" inverted onClick={this.closeModal}>
+              <Icon name="remove" /> Cancel
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </React.Fragment>
     );
   }
