@@ -75,7 +75,10 @@ class Messages extends React.Component {
     const regex = new RegExp(this.state.searchTerm, "gi"); // globally and case sensitively
 
     const searchResults = channelMessages.reduce((accumulator, message) => {
-      if (message.content && message.content.match(regex)) {
+      if (
+        (message.content && message.content.match(regex)) ||
+        message.user.name.match(regex)
+      ) {
         // have to make sure we check for images too
         accumulator.push(message);
       }
