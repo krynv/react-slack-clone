@@ -63,7 +63,7 @@ class Messages extends React.Component {
     this.setState(
       {
         searchTerm: e.target.value,
-        searchLoad: true
+        searchLoading: true
       },
       () => this.handleSearchMessages()
     );
@@ -86,6 +86,7 @@ class Messages extends React.Component {
     }, []);
 
     this.setState({ searchResults });
+    setTimeout(() => this.setState({ searchLoading: false }), 1000);
   };
 
   displayMessages = messages =>
@@ -115,7 +116,8 @@ class Messages extends React.Component {
       progressBar,
       numUniqueUsers,
       searchTerm,
-      searchResults
+      searchResults,
+      searchLoading
     } = this.state;
 
     return (
@@ -124,6 +126,7 @@ class Messages extends React.Component {
           channelName={this.displayChannelName(channel)}
           numUniqueUsers={numUniqueUsers}
           handleSearchChange={this.handleSearchChange}
+          searchLoading={searchLoading}
         />
 
         <Segment>
