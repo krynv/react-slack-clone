@@ -6,6 +6,10 @@ body,
   padding: 1em;
 }
 
+.menu {
+  padding-bottom: 2em;
+}
+
 .messages {
   height: 62vh;
   overflow-y: scroll;
@@ -35,5 +39,5 @@ body,
 
 .messages__progress {
   height: 58vh;
-  overflow-y:  scroll;
+  overflow-y: scroll;
 }
