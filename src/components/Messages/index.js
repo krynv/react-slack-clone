@@ -16,6 +16,7 @@ class Messages extends React.Component {
     user: this.props.currentUser,
     numUniqueUsers: "",
     searchTerm: "",
+    searchResults: [],
     searchLoading: false,
     progressBar: false
   };
@@ -59,12 +60,29 @@ class Messages extends React.Component {
   };
 
   handleSearchChange = e => {
-    this.setState({
-      searchTerm: e.target.value,
-      searchLoad: true
-    });
+    this.setState(
+      {
+        searchTerm: e.target.value,
+        searchLoad: true
+      },
+      () => this.handleSearchMessages()
+    );
+  };
 
-    
+  handleSearchMessages = () => {
+    //make a copy first
+    const channelMessages = [...this.state.messages];
+    const regex = new RegExp(this.state.searchTerm, "gi"); // globally and case sensitively
+
+    const searchResults = channelMessages.reduce((accumulator, message) => {
+      if (message.content && message.content.match(regex)) {
+        // have to make sure we check for images too
+        accumulator.push(message);
+      }
+      return accumulator;
+    }, []);
+
+    this.setState({ searchResults });
   };
 
   displayMessages = messages =>
@@ -92,7 +110,9 @@ class Messages extends React.Component {
       channel,
       user,
       progressBar,
-      numUniqueUsers
+      numUniqueUsers,
+      searchTerm,
+      searchResults
     } = this.state;
 
     return (
@@ -107,7 +127,9 @@ class Messages extends React.Component {
           <Comment.Group
             className={progressBar ? "messages__progress" : "messages"}
           >
-            {this.displayMessages(messages)}
+            {searchTerm
+              ? this.displayMessages(searchResults)
+              : this.displayMessages(messages)}
           </Comment.Group>
         </Segment>
 
