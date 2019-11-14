@@ -15,6 +15,8 @@ class Messages extends React.Component {
     channel: this.props.currentChannel,
     user: this.props.currentUser,
     numUniqueUsers: "",
+    searchTerm: "",
+    searchLoading: false,
     progressBar: false
   };
 
@@ -56,6 +58,15 @@ class Messages extends React.Component {
     this.setState({ numUniqueUsers });
   };
 
+  handleSearchChange = e => {
+    this.setState({
+      searchTerm: e.target.value,
+      searchLoad: true
+    });
+
+    
+  };
+
   displayMessages = messages =>
     messages.length > 0 &&
     messages.map(message => (
@@ -89,6 +100,7 @@ class Messages extends React.Component {
         <MessagesHeader
           channelName={this.displayChannelName(channel)}
           numUniqueUsers={numUniqueUsers}
+          handleSearchChange={this.handleSearchChange}
         />
 
         <Segment>
