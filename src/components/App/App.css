@@ -43,6 +43,7 @@ body,
 }
 
 .colour__container {
+  cursor: pointer;
   position: relative;
   overflow: hidden;
   width: 35px;
