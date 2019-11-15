@@ -6,17 +6,23 @@ import {
   Button,
   Modal,
   Icon,
-  Label
+  Label,
+  Segment
 } from "semantic-ui-react";
 import { SliderPicker } from "react-color";
 
 class ColourPanel extends React.Component {
   state = {
-    modal: false
+    modal: false,
+    primary: "",
+    secondary: ""
   };
 
   openModal = () => this.setState({ modal: true });
   closeModal = () => this.setState({ modal: false });
+
+  handleChangePrimary = colour => this.setState({ primary: colour.hex });
+  handleChangeSecondary = colour => this.setState({ secondary: colour.hex });
 
   render() {
     const { modal } = this.state;
@@ -37,10 +43,15 @@ class ColourPanel extends React.Component {
           <Modal.Header>Choose your preferred colours</Modal.Header>
 
           <Modal.Content>
-            <Label content="Primary Colour" />
-            <SliderPicker />
-            <Label content="Secondary Colour" />
-            <SliderPicker />
+            <Segment inverted>
+              <Label content="Primary Colour" />
+              <SliderPicker onChange={this.handleChangePrimary} />
+            </Segment>
+
+            <Segment inverted>
+              <Label content="Secondary Colour" />
+              <SliderPicker onChange={this.handleChangeSecondary} />
+            </Segment>
           </Modal.Content>
 
           <Modal.Actions>
