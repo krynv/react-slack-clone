@@ -23,6 +23,10 @@ class MetaPanel extends React.Component {
     this.setState({ activeIndex: newIndex });
   };
 
+  // fixes the plural/ singular issue with number of post(s)
+  formatCount = number =>
+    number > 1 || number === 0 ? `${number} posts` : `${number} post`;
+
   displayTopContributors = posts =>
     // create an array of arrays (lol), so we can use all of the array methods
     Object.entries(posts)
@@ -32,7 +36,7 @@ class MetaPanel extends React.Component {
           <Image avatar src={val.avatar} />
           <List.Content>
             <List.Header as="a">{key}</List.Header>
-            <List.Description>{val.count} posts</List.Description>
+            <List.Description>{this.formatCount(val.count)}</List.Description>
           </List.Content>
         </List.Item>
       ))
