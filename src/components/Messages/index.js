@@ -22,6 +22,7 @@ class Messages extends React.Component {
     searchResults: [],
     searchLoading: false,
     progressBar: false,
+    isChannelFavourited: false,
     listeners: []
   };
 
@@ -33,6 +34,25 @@ class Messages extends React.Component {
       this.addListeners(channel.id);
     }
   }
+
+  handleFavourite = () => {
+    this.setState(
+      prevState => ({
+        isChannelFavourited: !prevState.isChannelFavourited
+      }),
+      () => {
+        this.favouriteChannel();
+      }
+    );
+  };
+
+  favouriteChannel = () => {
+    if (this.state.isChannelFavourited) {
+      console.log("favourited");
+    } else {
+      console.log("unfavourite");
+    }
+  };
 
   addListeners = channelId => {
     this.addMessageListener(channelId);
@@ -151,7 +171,8 @@ class Messages extends React.Component {
       searchTerm,
       searchResults,
       searchLoading,
-      privateChannel
+      privateChannel,
+      isChannelFavourited
     } = this.state;
 
     return (
@@ -162,6 +183,8 @@ class Messages extends React.Component {
           handleSearchChange={this.handleSearchChange}
           searchLoading={searchLoading}
           isPrivateChannel={privateChannel}
+          handleFavourite={this.handleFavourite}
+          isChannelFavourited={isChannelFavourited}
         />
 
         <Segment>
