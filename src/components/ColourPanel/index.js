@@ -25,7 +25,7 @@ class ColourPanel extends React.Component {
   handleChangeSecondary = colour => this.setState({ secondary: colour.hex });
 
   render() {
-    const { modal } = this.state;
+    const { modal, primary, secondary } = this.state;
 
     return (
       <Sidebar
@@ -45,12 +45,18 @@ class ColourPanel extends React.Component {
           <Modal.Content>
             <Segment inverted>
               <Label content="Primary Colour" />
-              <SliderPicker onChange={this.handleChangePrimary} />
+              <SliderPicker
+                color={primary}
+                onChange={this.handleChangePrimary}
+              />
             </Segment>
 
             <Segment inverted>
               <Label content="Secondary Colour" />
-              <SliderPicker onChange={this.handleChangeSecondary} />
+              <SliderPicker
+                color={secondary}
+                onChange={this.handleChangeSecondary}
+              />
             </Segment>
           </Modal.Content>
 
