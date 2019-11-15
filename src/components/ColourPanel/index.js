@@ -19,7 +19,23 @@ class ColourPanel extends React.Component {
     primary: "",
     secondary: "",
     user: this.props.currentUser,
-    usersRef: firebase.database().ref("users")
+    usersRef: firebase.database().ref("users"),
+    userColours: []
+  };
+
+  componentDidMount() {
+    if (this.state.user) {
+      this.addListener(this.state.user.uid);
+    }
+  }
+
+  addListener = userId => {
+    let userColours = [];
+
+    this.state.usersRef.child(`${userId}/colours`).on("child_added", snap => {
+      userColours.unshift(snap.val());
+      this.setState({ userColours });
+    });
   };
 
   openModal = () => this.setState({ modal: true });
@@ -50,8 +66,27 @@ class ColourPanel extends React.Component {
       .catch(err => console.error(err));
   };
 
+  displayUserColours = colours =>
+    colours.length > 0 &&
+    colours.map((colour, index) => (
+      <React.Fragment key={index}>
+        <Divider />
+        <div className="colour__container">
+          <div
+            className="colour__square"
+            style={{ background: colour.primary }}
+          >
+            <div
+              className="colour__overlay"
+              style={{ background: colour.secondary }}
+            ></div>
+          </div>
+        </div>
+      </React.Fragment>
+    ));
+
   render() {
-    const { modal, primary, secondary } = this.state;
+    const { modal, primary, secondary, userColours } = this.state;
 
     return (
       <Sidebar
@@ -64,7 +99,7 @@ class ColourPanel extends React.Component {
       >
         <Divider />
         <Button icon="add" size="small" color="blue" onClick={this.openModal} />
-
+        {this.displayUserColours(userColours)}
         <Modal basic open={modal} onClose={this.closeModal}>
           <Modal.Header>Choose your preferred colours</Modal.Header>
 
