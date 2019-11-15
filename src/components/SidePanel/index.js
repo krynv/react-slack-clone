@@ -8,7 +8,7 @@ import Favourites from "../Favourites";
 
 class SidePanel extends React.Component {
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, primaryColour } = this.props;
 
     return (
       <Menu
@@ -16,10 +16,10 @@ class SidePanel extends React.Component {
         inverted
         fixed="left"
         vertical
-        style={{ background: "#4c3c4c", fontSize: "1.2rem" }}
+        style={{ background: primaryColour, fontSize: "1.2rem" }}
       >
-        <UserPanel currentUser={currentUser} />
-        <Favourites currentUser={currentUser}/>
+        <UserPanel primaryColour={primaryColour} currentUser={currentUser} />
+        <Favourites currentUser={currentUser} />
         <Channels currentUser={currentUser} />
         <DirectMessages currentUser={currentUser} />
       </Menu>

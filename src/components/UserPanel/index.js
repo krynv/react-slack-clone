@@ -34,15 +34,15 @@ class UserPanel extends React.Component {
       .signOut()
       .then(() => {
         console.log("signed out");
-        
       });
   };
 
   render() {
     const { user } = this.state;
+    const { primaryColour } = this.props;
 
     return (
-      <Grid style={{ background: "#4c3c4c" }}>
+      <Grid style={{ background: primaryColour }}>
         <Grid.Column>
           <Grid.Row style={{ padding: "1.2em", margin: 0 }}>
             <Header inverted floated="left" as="h2">
