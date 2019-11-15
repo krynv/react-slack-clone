@@ -17,7 +17,7 @@ class MessagesHeader extends React.Component {
       <Segment clearing>
         <Header fluid="true" as="h2" floated="left" style={{ marginBottom: 0 }}>
           <span>
-            {channelName}
+            {channelName}{" "}
             {!isPrivateChannel && (
               <Icon
                 onClick={handleFavourite}

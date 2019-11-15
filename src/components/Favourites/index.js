@@ -41,7 +41,7 @@ class Favourites extends React.Component {
       <Menu.Menu className="menu">
         <Menu.Item>
           <span>
-            <Icon name="star" /> FAVOURITES
+            <Icon name="star"/> FAVOURITES
           </span>{" "}
           ({favouritedChannels.length})
         </Menu.Item>

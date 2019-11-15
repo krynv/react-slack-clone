@@ -33,6 +33,7 @@ class Messages extends React.Component {
     if (channel && user) {
       this.removeListeners(listeners);
       this.addListeners(channel.id);
+      this.addUserFavouritedListener(channel.id, user.uid);
     }
   }
 
@@ -86,8 +87,15 @@ class Messages extends React.Component {
     });
   };
 
-  addListeners = channelId => {
-    this.addMessageListener(channelId);
+  addUserFavouritedListener = (channelId, userId) => {
+    this.state.usersRef.child(userId).child('favourited').once('value').then(data => {
+      if (data.val() !== null) {
+        const channelIds = Object.keys(data.val());
+        const prevFavourited = channelIds.includes(channelId);
+        
+        this.setState({ isChannelFavourited: prevFavourited});
+      }
+    })
   };
 
   addMessageListener = channelId => {
