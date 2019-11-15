@@ -9,13 +9,15 @@ import {
   Input,
   Button
 } from "semantic-ui-react";
+import AvatarEditor from "react-avatar-editor";
 
 import firebase from "../../firebase";
 
 class UserPanel extends React.Component {
   state = {
     user: this.props.currentUser,
-    modal: false
+    modal: false,
+    previewImage: ""
   };
 
   dropdownOptions = () => [
@@ -50,8 +52,20 @@ class UserPanel extends React.Component {
       });
   };
 
+  handleChange = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.addEventListener("load", () => {
+        this.setState({ previewImage: reader.result });
+      });
+    }
+  };
+
   render() {
-    const { user, modal } = this.state;
+    const { user, modal, previewImage } = this.state;
     const { primaryColour } = this.props;
 
     return (
@@ -78,10 +92,26 @@ class UserPanel extends React.Component {
           <Modal basic open={modal} onClose={this.closeModal}>
             <Modal.Header>Change Avatar</Modal.Header>
             <Modal.Content>
-              <Input fluid type="file" label="New Avatar" name="previewImage" />
+              <Input
+                onChange={this.handleChange}
+                fluid
+                type="file"
+                label="New Avatar"
+                name="previewImage"
+              />
               <Grid centered stackable columns={2}>
                 <Grid.Row centered>
-                  <Grid.Column className="ui center aligned grid"></Grid.Column>
+                  <Grid.Column className="ui center aligned grid">
+                    {previewImage && (
+                      <AvatarEditor
+                        image={previewImage}
+                        width={120}
+                        height={120}
+                        border={50}
+                        scale={1.2}
+                      />
+                    )}
+                  </Grid.Column>
                   <Grid.Column></Grid.Column>
                 </Grid.Row>
               </Grid>
