@@ -17,6 +17,7 @@ class Messages extends React.Component {
     messagesLoading: true,
     channel: this.props.currentChannel,
     user: this.props.currentUser,
+    usersRef: firebase.database().ref("users"),
     numUniqueUsers: "",
     searchTerm: "",
     searchResults: [],
@@ -48,9 +49,25 @@ class Messages extends React.Component {
 
   favouriteChannel = () => {
     if (this.state.isChannelFavourited) {
-      console.log("favourited");
+      this.state.usersRef.child(`${this.state.user.uid}/favourited`).update({
+        [this.state.channel.id]: {
+          name: this.state.channel.name,
+          details: this.state.channel.details,
+          createdBy: {
+            name: this.state.channel.createdBy.name,
+            avatar: this.state.channel.createdBy.avatar
+          }
+        }
+      });
     } else {
-      console.log("unfavourite");
+      this.state.usersRef
+        .child(`${this.state.user.uid}/favourited`)
+        .child(this.state.channel.id)
+        .remove(err => {
+          if (err !== null) {
+            console.error(err);
+          }
+        });
     }
   };
 
