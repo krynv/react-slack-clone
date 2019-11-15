@@ -47,7 +47,7 @@ class ColourPanel extends React.Component {
             <Button color="green" inverted>
               <Icon name="checkmark" /> Save Changes
             </Button>
-            <Button color="red" inverted>
+            <Button color="red" inverted onClick={this.closeModal}>
               <Icon name="remove" /> Cancel
             </Button>
           </Modal.Actions>
