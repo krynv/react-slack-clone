@@ -11,11 +11,15 @@ import {
 } from "semantic-ui-react";
 import { SliderPicker } from "react-color";
 
+import firebase from "../../firebase";
+
 class ColourPanel extends React.Component {
   state = {
     modal: false,
-    primary: "#40bf43",
-    secondary: "#2d4d86"
+    primary: "",
+    secondary: "",
+    user: this.props.currentUser,
+    usersRef: firebase.database().ref("users")
   };
 
   openModal = () => this.setState({ modal: true });
@@ -23,6 +27,28 @@ class ColourPanel extends React.Component {
 
   handleChangePrimary = colour => this.setState({ primary: colour.hex });
   handleChangeSecondary = colour => this.setState({ secondary: colour.hex });
+
+  handleSaveColours = () => {
+    // check if they actually exist
+    if (this.state.primary && this.state.secondary) {
+      this.saveColours(this.state.primary, this.state.secondary);
+    }
+  };
+
+  saveColours = (primary, secondary) => {
+    this.state.usersRef
+      .child(`${this.state.user.uid}/colours`)
+      .push()
+      .update({
+        primary,
+        secondary
+      })
+      .then(() => {
+        console.log("Successfully changed colours");
+        this.closeModal();
+      })
+      .catch(err => console.error(err));
+  };
 
   render() {
     const { modal, primary, secondary } = this.state;
@@ -61,7 +87,7 @@ class ColourPanel extends React.Component {
           </Modal.Content>
 
           <Modal.Actions>
-            <Button color="green" inverted>
+            <Button color="green" inverted onClick={this.handleSaveColours}>
               <Icon name="checkmark" /> Save Changes
             </Button>
             <Button color="red" inverted onClick={this.closeModal}>

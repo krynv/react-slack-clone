@@ -11,9 +11,11 @@ import MetaPanel from "../MetaPanel";
 
 const App = ({ currentUser, currentChannel, isPrivateChannel, userPosts }) => (
   <Grid columns="equal" className="app" style={{ background: "#eee" }}>
-    <ColourPanel />
+    <ColourPanel
+      key={currentUser && currentUser.name}
+      currentUser={currentUser}
+    />
     <SidePanel key={currentUser && currentUser.uid} currentUser={currentUser} />
-
     <Grid.Column style={{ marginLeft: 320 }}>
       <Messages
         key={currentChannel && currentChannel.id}
@@ -25,7 +27,7 @@ const App = ({ currentUser, currentChannel, isPrivateChannel, userPosts }) => (
 
     <Grid.Column width={4}>
       <MetaPanel
-        key={currentChannel && currentChannel.id}
+        key={currentChannel && currentChannel.name} // pass a different prop for key cause we don't wanna confuse things
         userPosts={userPosts}
         currentChannel={currentChannel}
         isPrivateChannel={isPrivateChannel}
