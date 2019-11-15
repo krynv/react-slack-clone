@@ -14,8 +14,8 @@ import { SliderPicker } from "react-color";
 class ColourPanel extends React.Component {
   state = {
     modal: false,
-    primary: "",
-    secondary: ""
+    primary: "#40bf43",
+    secondary: "#2d4d86"
   };
 
   openModal = () => this.setState({ modal: true });
