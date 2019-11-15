@@ -1,9 +1,12 @@
 import React from "react";
 import { Segment, Comment } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 import Message from "../Message";
 import MessageForm from "../MessagesForm";
 import MessagesHeader from "../MessagesHeader";
+
+import { setUserPosts } from "../../actions";
 
 import firebase from "../../firebase";
 
@@ -88,14 +91,18 @@ class Messages extends React.Component {
   };
 
   addUserFavouritedListener = (channelId, userId) => {
-    this.state.usersRef.child(userId).child('favourited').once('value').then(data => {
-      if (data.val() !== null) {
-        const channelIds = Object.keys(data.val());
-        const prevFavourited = channelIds.includes(channelId);
-        
-        this.setState({ isChannelFavourited: prevFavourited});
-      }
-    })
+    this.state.usersRef
+      .child(userId)
+      .child("favourited")
+      .once("value")
+      .then(data => {
+        if (data.val() !== null) {
+          const channelIds = Object.keys(data.val());
+          const prevFavourited = channelIds.includes(channelId);
+
+          this.setState({ isChannelFavourited: prevFavourited });
+        }
+      });
   };
 
   addMessageListener = channelId => {
@@ -110,7 +117,23 @@ class Messages extends React.Component {
       });
 
       this.countUniqueUsers(loadedMessages);
+      this.countUserPosts(loadedMessages);
     });
+  };
+
+  countUserPosts = messages => {
+    let userPosts = messages.reduce((accumulator, message) => {
+      if (message.user.name in accumulator) {
+        accumulator[message.user.name].count += 1;
+      } else {
+        accumulator[message.user.name] = {
+          avatar: message.user.avatar,
+          count: 1
+        };
+      }
+      return accumulator;
+    }, {});
+    this.props.setUserPosts(userPosts);
   };
 
   getMessagesRef = () => {
@@ -235,4 +258,4 @@ class Messages extends React.Component {
   }
 }
 
-export default Messages;
+export default connect(null, { setUserPosts })(Messages);
