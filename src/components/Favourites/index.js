@@ -21,6 +21,14 @@ class Favourites extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
+  removeListener = () => {
+    this.usersRef.child(`${this.state.user.uid}/favourited`).off();
+  };
+
   addListeners = userId => {
     this.state.usersRef
       .child(userId)
