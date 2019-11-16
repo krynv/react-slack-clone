@@ -1,11 +1,14 @@
 import React from "react";
 import { Segment, Button, Input } from "semantic-ui-react";
 import uuidv4 from "uuid/v4";
+import { Picker, emojiIndex } from "emoji-mart";
 
 import firebase from "../../firebase";
 
 import FileModal from "../FileModal";
 import ProgressBar from "../ProgressBar";
+
+import "emoji-mart/css/emoji-mart.css";
 
 class MessageForm extends React.Component {
   state = {
@@ -19,7 +22,8 @@ class MessageForm extends React.Component {
     percentUploaded: 0,
     uploadTask: null,
     loading: false,
-    modal: false
+    modal: false,
+    emojiPicker: false
   };
 
   componentWillUnmount() {
@@ -176,6 +180,10 @@ class MessageForm extends React.Component {
     }
   };
 
+  handleTogglePicker = () => {
+    this.setState({ emojiPicker: !this.state.emojiPicker });
+  };
+
   render() {
     const {
       errors,
@@ -183,11 +191,20 @@ class MessageForm extends React.Component {
       loading,
       modal,
       uploadState,
-      percentUploaded
+      percentUploaded,
+      emojiPicker
     } = this.state;
 
     return (
       <Segment className="message__form">
+        {emojiPicker && (
+          <Picker
+            set="apple"
+            className="emojiPicker"
+            title="Emoji"
+            emoji="point_up"
+          />
+        )}
         <Input
           fluid
           name="message"
@@ -195,7 +212,7 @@ class MessageForm extends React.Component {
           onKeyDown={this.handleKeyDown}
           value={message}
           style={{ marginBottom: "0.07em" }}
-          label={<Button icon={"add"} />}
+          label={<Button icon={"add"} onClick={this.handleTogglePicker} />}
           labelPosition="left"
           className={
             errors.some(error => error.message.includes("message"))
