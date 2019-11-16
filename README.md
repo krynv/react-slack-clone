@@ -2,4 +2,4 @@
 
 Bootstrapped with create-react-app.
 
-WIP
+http://flix.chat
