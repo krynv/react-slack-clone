@@ -1,8 +1,10 @@
 import React from "react";
 
 const TypingIndicator = () => (
-  <div>
-    <div></div>
+  <div className="typing">
+    <div className="typing__dot"></div>
+    <div className="typing__dot"></div>
+    <div className="typing__dot"></div>
   </div>
 );
 

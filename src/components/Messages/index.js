@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Message from "../Message";
 import MessageForm from "../MessagesForm";
 import MessagesHeader from "../MessagesHeader";
+import TypingIndicator from "../TypingIndicator";
 
 import { setUserPosts } from "../../actions";
 
@@ -242,6 +243,10 @@ class Messages extends React.Component {
             {searchTerm
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span className="user__typing">user is typing</span>
+              <TypingIndicator />
+            </div>
           </Comment.Group>
         </Segment>
 
