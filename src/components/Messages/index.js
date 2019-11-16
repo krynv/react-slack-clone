@@ -6,6 +6,7 @@ import Message from "../Message";
 import MessageForm from "../MessagesForm";
 import MessagesHeader from "../MessagesHeader";
 import TypingIndicator from "../TypingIndicator";
+import LoadingSkeleton from "../LoadingSkeleton";
 
 import { setUserPosts } from "../../actions";
 
@@ -276,6 +277,15 @@ class Messages extends React.Component {
       </div>
     ));
 
+  displayMessagesSkeleton = loading =>
+    loading ? (
+      <React.Fragment>
+        {[...Array(10)].map((_, index) => (
+          <LoadingSkeleton key={index} />
+        ))}
+      </React.Fragment>
+    ) : null;
+
   render() {
     const {
       messagesRef,
@@ -289,7 +299,8 @@ class Messages extends React.Component {
       searchLoading,
       privateChannel,
       isChannelFavourited,
-      typingUsers
+      typingUsers,
+      messagesLoading
     } = this.state;
 
     return (
@@ -308,6 +319,7 @@ class Messages extends React.Component {
           <Comment.Group
             className={progressBar ? "messages__progress" : "messages"}
           >
+            {this.displayMessagesSkeleton(messagesLoading)}
             {searchTerm
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}
