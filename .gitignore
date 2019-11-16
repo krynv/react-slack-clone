@@ -1,4 +1,7 @@
+build
+
 firebase.js
+.firebase*
 
 # Logs
 logs
@@ -104,3 +107,6 @@ dist
 
 # TernJS port file
 .tern-port
+storage.rules
+firebase.json
+database.rules.json
