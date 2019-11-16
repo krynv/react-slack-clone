@@ -43,6 +43,16 @@ class Messages extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.messagesEnd) {
+      this.scrollToBottom();
+    }
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behaviour: "smooth" });
+  };
+
   handleFavourite = () => {
     this.setState(
       prevState => ({
@@ -302,6 +312,7 @@ class Messages extends React.Component {
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}
             {this.displayTypingUsers(typingUsers)}
+            <div ref={node => (this.messagesEnd = node)}></div>
           </Comment.Group>
         </Segment>
 
